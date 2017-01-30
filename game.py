@@ -1,6 +1,8 @@
 import random, time
 
+iteration = 0
 past = ""
+past2 = ""
 player_input = "game help"
 health = 100
 hunger = 100
@@ -20,11 +22,6 @@ mutton = 0
 cooked_mutton = 0
 
 while True:
-    past = player_input
-    player_input = input("> ")
-    if player_input == "past":
-        player_input = past
-    
     if "game" in player_input.lower():
         if "game inv" in player_input.lower():
             print("Materials: ")
@@ -171,4 +168,21 @@ while True:
             else:
                 print("N/A")
             #TODO: Add more discoveries to plains
-    
+
+    if past == "auto past":
+        if iteration == 0:
+            iteration == 1
+            past = player_input
+            player_input = past2
+            
+        if iteration == 10:
+            player_input = input("> ")
+            iteration = 0
+            
+        else:
+            iteration += 1
+            
+    elif iteration == 0:
+        past2 = player_input
+        player_input = input("> ")
+        past = player_input
