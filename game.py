@@ -2,14 +2,19 @@ import random, time
 
 past = ""
 player_input = "game help"
+health = 100
+hunger = 100
 
-trees = 5
+trees = 10
 logs = 0
 saplings = 0
 flowers = 0
 herbs = 0
 apples = 0
 seeds = 0
+wheat = 0
+bread = 0
+toast = 0
 
 while True:
     past = player_input
@@ -28,11 +33,27 @@ while True:
             print(" Flowers: "+str(flowers))
             print(" Herbs: "+str(herbs))
             print(" Seeds: "+str(seeds))
+            print(" Wheat: "+str(wheat))
+
+            print("\nFood: ")
+            print(" Apples: "+str(apples))
+            print(" Bread: "+str(bread))
+            print(" Toast: "+str(toast))
             
         if "game help" in player_input.lower():
             print("Use 'past' to run the last input again.")
             print("Use 'game inv' to get the inventory.")
-    
+            
+    if "player" in player_input.lower():
+        if "player health" in player_input.lower():
+            print("Health: "+str(health)+"/100")
+            
+        if "player hunger" in player_input.lower():
+            print("Hunger: "+str(hunger)+"/100")        
+
+        print("Health: "+str(health)+"/100")
+        print("Hunger: "+str(hunger)+"/100")
+        
     if "cut" in player_input.lower():
         if "cut tree" in player_input.lower():
             print("Cutting Tree...")
@@ -56,7 +77,7 @@ while True:
             print("Cutting Logs...")
             
     if "plant" in player_input.lower():
-        if "plant sapling" or "plant tree" in player_input.lower():
+        if "plant sapling" in player_input.lower():
             print("Planting Saplings...")
             if saplings > 0:
                 saplings -= 1
@@ -64,7 +85,36 @@ while True:
                 print("Saplings: "+str(saplings)+" (-1) | Trees: "+str(trees)+" (+1)")
             else:
                 print("Not enough Saplings! (Needs: 1 | Has: "+str(saplings)+")")
+                
+        if "plant seeds" in player_input.lower():
+            print("Planting Seeds...")
+            if seeds > 0:
+                seeds -= 5
+                wheat += 5
+                print("Seeds: "+str(seeds)+" (-5) | Wheat: "+str(wheat)+" (+5)")
+            else:
+                print("Not enough Seeds! (Needs: 5 | Has: "+str(seeds)+")")
 
+    if "bake" in player_input.lower():
+        if "bake bread" in player_input.lower():
+            print("Baking Bread...")
+            if wheat > 0:
+                wheat -= 3
+                bread += 1
+                print("Wheat: "+str(wheat)+" (-3) | Bread: "+str(bread)+" (+1)")
+            else:
+                print("Not enough Wheat! (Needs: 3 | Has: "+str(wheat)+")")
+                
+    if "cook" in player_input.lower():
+        if "cook toast" in player_input.lower():
+            print("Cooking Toast...")
+            if bread > 0:
+                bread -= 1
+                toast += 2
+                print("Bread: "+str(bread)+" (-1) | Toast: "+str(toast)+" (+2)")
+            else:
+                print("Not enough Bread! (Needs: 1 | Has: "+str(bread)+")")
+                
     if "explore" in player_input.lower():
         if "explore plains" in player_input.lower():
             print("Exploring Plains... ")
