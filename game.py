@@ -15,6 +15,9 @@ seeds = 0
 wheat = 0
 bread = 0
 toast = 0
+wool = 0
+mutton = 0
+cooked_mutton = 0
 
 while True:
     past = player_input
@@ -39,6 +42,8 @@ while True:
             print(" Apples: "+str(apples))
             print(" Bread: "+str(bread))
             print(" Toast: "+str(toast))
+            print(" Mutton: "+str(mutton))
+            print(" Cooked Mutton: "+str(cooked_mutton))
             
         if "game help" in player_input.lower():
             print("Use 'past' to run the last input again.")
@@ -115,6 +120,15 @@ while True:
             else:
                 print("Not enough Bread! (Needs: 1 | Has: "+str(bread)+")")
                 
+        if "cook mutton" in player_input.lower():
+            print("Cooking Mutton...")
+            if mutton > 0:
+                mutton -= 1
+                cooked_mutton += 1
+                print("Mutton: "+str(mutton)+" (-1) | Cooked Mutton: "+str(cooked_mutton)+" (+1)")
+            else:
+                print("Not enough Mutton! (Needs: 1 | Has: "+str(mutton)+")")
+                
     if "explore" in player_input.lower():
         if "explore plains" in player_input.lower():
             print("Exploring Plains... ")
@@ -137,6 +151,24 @@ while True:
             print("Seeds: "+str(seeds)+" (+"+str(new_seeds)+")")
             new_seeds = 0
             time.sleep(1)
-                
+
+            find_sheep = random.randint(0, 1)
+            if find_sheep == 1:
+                ask_sheep = input("You have found a sheep. Kill it? (Y/N)\n> ")
+                if ask_sheep.lower() == "y":
+                    kill_sheep = random.randint(1, 100)
+                    if kill_sheep > 5:
+                        print("[SUCCESS] The sheep was killed.")
+                        new_wool = random.randint(1, 3)
+                        wool += new_wool
+                        new_mutton = random.randint(2, 4)
+                        mutton += new_mutton
+                        print("Wool: "+str(wool)+" (+"+str(new_wool)+") | Mutton: "+str(mutton)+" (+"+str(new_mutton)+")")
+                    else:
+                        print("[FAILED] The sheep managed to escape from you, making you look like an idiot.")
+                else:
+                    print("You've decided not to kill the sheep.")
+            else:
+                print("N/A")
             #TODO: Add more discoveries to plains
     
