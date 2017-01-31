@@ -40,9 +40,20 @@ while True:
         campfire = 1
         
     if "game" in player_input.lower():
-        if "game inv" in player_input.lower():
+        if "game help" in player_input.lower():
+            print("Use 'player inv' to get the inventory.")
+            print("Use 'game help' to show this again.")
+            
+    if "player" in player_input.lower():
+        if "player health" in player_input.lower():
+            print("Health: "+str(health)+"/100")
+            
+        if "player hunger" in player_input.lower():
+            print("Hunger: "+str(hunger)+"/100")
+    
+        if "player inv" in player_input.lower():
             print("Buildings: ")
-            print(" Campfire(s): "+str(campfire))
+            print(" Campfire: "+str(campfire)+"/1")
             
             print("\nMaterials: ")
             print(" Logs: "+str(logs))
@@ -62,20 +73,6 @@ while True:
             print(" Toast: "+str(toast))
             print(" Mutton: "+str(mutton))
             print(" Cooked Mutton: "+str(cooked_mutton))
-            
-        if "game help" in player_input.lower():
-            print("Use 'game inv' to get the inventory.")
-            print("Use 'game help' to show this again.")
-            
-    if "player" in player_input.lower():
-        if "player health" in player_input.lower():
-            print("Health: "+str(health)+"/100")
-            
-        if "player hunger" in player_input.lower():
-            print("Hunger: "+str(hunger)+"/100")        
-
-        print("Health: "+str(health)+"/100")
-        print("Hunger: "+str(hunger)+"/100")
         
     if "cut" in player_input.lower():
         if "cut tree" in player_input.lower():
@@ -197,12 +194,12 @@ while True:
             print("Building Campfire...")
             if campfire > 0:
                 print("You already have a campfire!")
-            elif sticks > 0 or logs > 0:
+            elif sticks >= 5 or logs >= 3:
                 sticks -= 5
-                logs -= 5
+                logs -= 3
                 campfire += 1
                 campfire_dur = 100
-                print("Campfire(s): "+str(campfire)+" (Dur.: "+str(campfire_dur)+"/100) (+1)")
+                print("Campfire(s): "+str(campfire)+" (Dur.: "+str(campfire_dur)+"/100) (+1) | Logs: "+str(logs)+" (-3) | Sticks: "+str(sticks)+" (-5)")
             else:
                 print("Not enough Sticks/Logs! (Logs: Needs: 3 | Has: "+str(logs)+") (Sticks: Needs: 5 | Has: "+str(sticks)+")")
 
