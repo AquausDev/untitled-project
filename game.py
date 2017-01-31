@@ -1,5 +1,6 @@
 import random, time
 
+global campfire_dur
 iteration = 0
 past = ""
 past2 = ""
@@ -9,6 +10,7 @@ hunger = 100
 
 trees = 15
 logs = 0
+sticks = 0
 saplings = 0
 flowers = 0
 herbs = 0
@@ -21,11 +23,30 @@ wool = 0
 mutton = 0
 cooked_mutton = 0
 
+campfire = 0
+campfire_dur = 0
+
+def check_camp_durability(input_camp_dur):
+    if campfire_dur < input_camp_dur:
+        return False
+    else:
+        return True
+  
 while True:
+    #checks on loop
+    if campfire_dur < 1:
+        campfire -= 0
+    elif campfire > 1:
+        campfire = 1
+        
     if "game" in player_input.lower():
         if "game inv" in player_input.lower():
-            print("Materials: ")
+            print("Buildings: ")
+            print(" Campfire(s): "+str(campfire))
+            
+            print("\nMaterials: ")
             print(" Logs: "+str(logs))
+            print(" Sticks: "+str(sticks))
                   
             print("\nPlants: ")
             print(" Trees: "+str(trees))
@@ -43,8 +64,8 @@ while True:
             print(" Cooked Mutton: "+str(cooked_mutton))
             
         if "game help" in player_input.lower():
-            print("Use 'past' to run the last input again.")
             print("Use 'game inv' to get the inventory.")
+            print("Use 'game help' to show this again.")
             
     if "player" in player_input.lower():
         if "player health" in player_input.lower():
@@ -63,20 +84,19 @@ while True:
                 trees -= 1
                 new_logs = random.randint(2, 5)
                 new_saplings = random.randint(1, 3)
+                new_sticks = random.randint(1, 3)
                 new_apples = random.randint(0, 2)
-                apples += new_apples
                 if new_apples == 0:
                     apple_text = ""
                 else:
-                   apple_text = "| Apples: "+str(apples)+" (+"+str(new_apples)+")"
+                    apples += new_apples
+                    apple_text = "| Apples: "+str(apples)+" (+"+str(new_apples)+")"
                 saplings += new_saplings
                 logs += new_logs
-                print("Logs: "+str(logs)+" (+"+str(new_logs)+") | Trees: "+str(trees)+" (-1) | Saplings: "+str(saplings)+" (+"+str(new_saplings)+") "+ apple_text)
+                sticks += new_sticks
+                print("Logs: "+str(logs)+" (+"+str(new_logs)+") | Trees: "+str(trees)+" (-1) | Saplings: "+str(saplings)+" (+"+str(new_saplings)+") | Sticks: "+str(sticks)+" (+"+str(new_sticks)+")" + apple_text)
             else:
                 print("Not enough Trees! (Needs: 1 | Has: "+str(trees)+")")
-
-        if "cut logs" in player_input.lower():
-            print("Cutting Logs...")
             
     if "plant" in player_input.lower():
         if "plant sapling" in player_input.lower():
@@ -111,9 +131,14 @@ while True:
         if "cook toast" in player_input.lower():
             print("Cooking Toast...")
             if bread > 0:
-                bread -= 1
-                toast += 2
-                print("Bread: "+str(bread)+" (-1) | Toast: "+str(toast)+" (+2)")
+                cook_dur = 3
+                if check_camp_durability(cook_dur) == False:
+                    print("Not enough fire durability! (Have: "+str(campfire_dur)+"/100 | Need: "+str(cook_dur)+")")
+                else:
+                    campfire_dur -= cook_dur
+                    bread -= 1
+                    toast += 2
+                    print("Bread: "+str(bread)+" (-1) | Toast: "+str(toast)+" (+2)")
             else:
                 print("Not enough Bread! (Needs: 1 | Has: "+str(bread)+")")
                 
@@ -134,27 +159,27 @@ while True:
                 flowers += new_flowers
                 print("Flowers: "+str(flowers)+" (+"+str(new_flowers)+")")
                 new_flowers = 0
-                time.sleep(1)
+                time.sleep(0.5)
                 
             new_herbs = random.randint(0, 3)
             if not new_herbs == 0:
                 herbs += new_herbs
                 print("Herbs: "+str(herbs)+" (+"+str(new_herbs)+")")
                 new_herbs = 0
-                time.sleep(1)
+                time.sleep(0.5)
                 
             new_seeds = random.randint(1, 8)
             seeds += new_seeds
             print("Seeds: "+str(seeds)+" (+"+str(new_seeds)+")")
             new_seeds = 0
-            time.sleep(1)
+            time.sleep(0.5)
 
-            find_sheep = random.randint(0, 1)
-            if find_sheep == 1:
+            find_sheep = random.randint(1, 10)
+            if find_sheep > 6:
                 ask_sheep = input("You have found a sheep. Kill it? (Y/N)\n> ")
                 if ask_sheep.lower() == "y":
                     kill_sheep = random.randint(1, 100)
-                    if kill_sheep > 5:
+                    if kill_sheep > 15:
                         print("[SUCCESS] The sheep was killed.")
                         new_wool = random.randint(1, 3)
                         wool += new_wool
@@ -165,11 +190,35 @@ while True:
                         print("[FAILED] The sheep managed to escape from you, making you look like an idiot.")
                 else:
                     print("You've decided not to kill the sheep.")
-            else:
-                print("N/A")
             #TODO: Add more discoveries to plains
-                
-    print(iteration)
+
+    if "build" in player_input:
+        if "build campfire" in player_input:
+            print("Building Campfire...")
+            if campfire > 0:
+                print("You already have a campfire!")
+            elif sticks > 0 or logs > 0:
+                sticks -= 5
+                logs -= 5
+                campfire += 1
+                campfire_dur = 100
+                print("Campfire(s): "+str(campfire)+" (Dur.: "+str(campfire_dur)+"/100) (+1)")
+            else:
+                print("Not enough Sticks/Logs! (Logs: Needs: 3 | Has: "+str(logs)+") (Sticks: Needs: 5 | Has: "+str(sticks)+")")
+
+    if "destroy" in player_input:
+        if "destroy campfire" in player_input:
+            print("Destroying Campfire...")
+            campfire_dur = 0
+            campfire -= 1
+            print("Campfire: "+str(campfire)+" (-1)")
+
+    
+    if "building" in player_input:
+        if "building info" in player_input:
+            print("Building Information")
+            print(" Campfire: (Have: "+str(campfire)+") (Dur.: "+str(campfire_dur)+"/100)") 
+            
     time.sleep(0.1)
     if past == "auto past":
         if iteration == 0:
