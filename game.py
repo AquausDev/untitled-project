@@ -7,7 +7,7 @@ player_input = "game help"
 health = 100
 hunger = 100
 
-trees = 10
+trees = 15
 logs = 0
 saplings = 0
 flowers = 0
@@ -168,7 +168,9 @@ while True:
             else:
                 print("N/A")
             #TODO: Add more discoveries to plains
-
+                
+    print(iteration)
+    time.sleep(0.1)
     if past == "auto past":
         if iteration == 0:
             iteration == 1
@@ -178,6 +180,7 @@ while True:
         if iteration == 10:
             player_input = input("> ")
             iteration = 0
+            past = ""
             
         else:
             iteration += 1
@@ -185,4 +188,6 @@ while True:
     elif iteration == 0:
         past2 = player_input
         player_input = input("> ")
+        if player_input == "past":
+            player_input = past 
         past = player_input
