@@ -136,15 +136,22 @@ while True:
                     bread -= 1
                     toast += 2
                     print("Bread: "+str(bread)+" (-1) | Toast: "+str(toast)+" (+2)")
+                    print("Campfire Dur.: "+str(campfire_dur)+"/100) (-"+str(cook_dur)+")")
             else:
                 print("Not enough Bread! (Needs: 1 | Has: "+str(bread)+")")
                 
         if "cook mutton" in player_input.lower():
             print("Cooking Mutton...")
             if mutton > 0:
-                mutton -= 1
-                cooked_mutton += 1
-                print("Mutton: "+str(mutton)+" (-1) | Cooked Mutton: "+str(cooked_mutton)+" (+1)")
+                cook_dur = 4
+                if check_camp_durability(cook_dur) == False:
+                    print("Not enough fire durability! (Have: "+str(campfire_dur)+"/100 | Need: "+str(cook_dur)+")")
+                else:
+                    campfire_dur -= cook_dur
+                    mutton -= 1
+                    cooked_mutton += 1
+                    print("Mutton: "+str(mutton)+" (-1) | Cooked Mutton: "+str(cooked_mutton)+" (+1)")
+                    print("Campfire Dur.: ("+str(campfire_dur)+"/100) (-"+str(cook_dur)+")")
             else:
                 print("Not enough Mutton! (Needs: 1 | Has: "+str(mutton)+")")
                 
@@ -199,7 +206,7 @@ while True:
                 logs -= 3
                 campfire += 1
                 campfire_dur = 100
-                print("Campfire(s): "+str(campfire)+" (Dur.: "+str(campfire_dur)+"/100) (+1) | Logs: "+str(logs)+" (-3) | Sticks: "+str(sticks)+" (-5)")
+                print("Campfire: "+str(campfire)+" (Dur.: "+str(campfire_dur)+"/100) (+1) | Logs: "+str(logs)+" (-3) | Sticks: "+str(sticks)+" (-5)")
             else:
                 print("Not enough Sticks/Logs! (Logs: Needs: 3 | Has: "+str(logs)+") (Sticks: Needs: 5 | Has: "+str(sticks)+")")
 
