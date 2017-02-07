@@ -10,6 +10,7 @@ hunger = 100
 
 trees = 15
 logs = 0
+planks = 0
 sticks = 0
 saplings = 0
 flowers = 0
@@ -22,6 +23,7 @@ toast = 0
 wool = 0
 mutton = 0
 cooked_mutton = 0
+driftwood = 0
 
 campfire = 0
 campfire_dur = 0
@@ -57,6 +59,7 @@ while True:
             
             print("\nMaterials: ")
             print(" Logs: "+str(logs))
+            print(" Planks: "+str(planks))
             print(" Sticks: "+str(sticks))
                   
             print("\nPlants: ")
@@ -94,7 +97,25 @@ while True:
                 print("Logs: "+str(logs)+" (+"+str(new_logs)+") | Trees: "+str(trees)+" (-1) | Saplings: "+str(saplings)+" (+"+str(new_saplings)+") | Sticks: "+str(sticks)+" (+"+str(new_sticks)+")" + apple_text)
             else:
                 print("Not enough Trees! (Needs: 1 | Has: "+str(trees)+")")
-            
+                
+        if "cut logs" in player_input.lower():
+            print("Cutting Logs...")
+            if logs > 1:
+                logs -= 2
+                planks += 6
+                print("Logs: "+str(logs)+" (-2) | Planks: "+str(planks)+" (+2)")
+            else:
+                print("Not enough Logs! (Needs: 2 | Has: "+str(logs)+")")
+                      
+        if "cut driftwood" in player_input.lower():
+            print("Cutting Driftwood...")
+            if driftwood > 1:
+                driftwood -= 2
+                planks += 1
+                print("Driftwood: "+str(driftwood)+" (-2) | Planks: "+str(planks)+" (+1)")
+            else:
+                print("Not enough Driftwood! (Needs: 2 | Has: "+str(driftwood)+")")                
+                        
     if "plant" in player_input.lower():
         if "plant sapling" in player_input.lower():
             print("Planting Saplings...")
@@ -194,8 +215,15 @@ while True:
                         print("[FAILED] The sheep managed to escape from you, making you look like an idiot.")
                 else:
                     print("You've decided not to kill the sheep.")
-            #TODO: Add more discoveries to plains
-
+                      
+        if "explore beach" in player_input.lower():
+            print("Exploring Beach... ")
+            new_driftwood = random.randint(1, 3)
+            driftwood += new_driftwood
+            print("Driftwood: "+str(driftwood)+" (+"+str(new_driftwood)+")")
+            new_driftwood = 0
+            time.sleep(0.5)
+                
     if "build" in player_input:
         if "build campfire" in player_input:
             print("Building Campfire...")
